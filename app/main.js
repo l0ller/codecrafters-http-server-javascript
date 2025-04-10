@@ -44,7 +44,7 @@ const server = net.createServer((socket) => {
             }
         });}
         catch(err){
-            console.log(err);
+          //  console.log(err);
 
         }
         
