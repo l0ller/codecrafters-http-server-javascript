@@ -12,7 +12,8 @@ const server = net.createServer((socket) => {
     const [method,path,version] = requestline.split(" ");
     const headers = requestparts.slice(1);
     const headerObj = {};
-   // console.log(method,path,version);
+
+   console.log(path);
     
     headers.forEach(header =>{
         if(header){
