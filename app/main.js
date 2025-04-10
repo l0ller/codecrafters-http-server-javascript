@@ -12,6 +12,9 @@ const server = net.createServer((socket) => {
     const [method,path,version] = requestline.split(" ");
     const headers = requestparts.slice(1);
     const headerObj = {};
+    console.log(method,path,version);
+    console.log(headers);
+    console.log(headerObj);
     headers.forEach(header =>{
         if(header){
             const[key,value] = header.split(": ");
