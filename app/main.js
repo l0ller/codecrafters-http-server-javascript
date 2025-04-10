@@ -24,16 +24,18 @@ const server = net.createServer((socket) => {
         }
 
     });
-    
-    if(path != "/"){
-        console.log(path);
-        response = "HTTP/1.1 404 Not Found\r\n\r\n";
-        socket.write(response);
-    }
-    else if(method === "GET" && path.startsWith("/echo/")){
+
+    if(method === "GET" && path.startsWith("/echo/")){
         const slicedPath = path.substring("/echo/".length);
         response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:" + slicedPath.length + "\r\n\r\n" + slicedPath;
         console.log(response);
+        socket.write(response);
+    }
+    
+    
+    else if(path !== "/"){
+        console.log(path);
+        response = "HTTP/1.1 404 Not Found\r\n\r\n";
         socket.write(response);
     }
     else {
