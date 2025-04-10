@@ -13,7 +13,7 @@ const server = net.createServer((socket) => {
     const headers = requestparts.slice(1);
     const headerObj = {};
 
-   console.log(path);
+  
     
     headers.forEach(header =>{
         if(header){
@@ -26,6 +26,7 @@ const server = net.createServer((socket) => {
     });
     let response;
     if(path != "/"){
+        console.log(path);
         response = "HTTP/1.1 404 Not Found\r\n\r\n";
         socket.write(response);
     }
