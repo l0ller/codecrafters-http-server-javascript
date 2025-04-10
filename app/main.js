@@ -31,6 +31,12 @@ const server = net.createServer((socket) => {
         console.log(response);
         socket.write(response);
     }
+
+    else if(method === "GET" && path.startsWith("/user-agent")){
+        const userAgent = headerObj["User-Agent"];
+        response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:" + userAgent.length + "\r\n\r\n" + userAgent;
+        socket.write(response);
+    }
     
     
     else if(path !== "/"){
