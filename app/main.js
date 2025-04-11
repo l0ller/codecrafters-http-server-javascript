@@ -29,9 +29,9 @@ const server = net.createServer((socket) => {
     if(method === "POST" && path.startsWith("/files/")){
         const slicedPath = path.substring("/files/".length);
         const fs = require("fs");
-        const filepath = process.argv[3]+"/" + slicedPath;
+        const filepath = process.argv[3] + slicedPath;
         console.log(filepath);
-        console.log(headerObj[3]);
+        console.log(headers[headers.length-1]);
 
        // fs.writeFileSync(path, content);
         socket.end();
