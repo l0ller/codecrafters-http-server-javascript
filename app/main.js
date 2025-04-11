@@ -30,7 +30,7 @@ const server = net.createServer((socket) => {
     if(method === "GET" && path.startsWith("/files/")){
         const slicedPath = path.substring("/files/".length);
         const fs = require("fs");
-        const filepath = "tmp/" + slicedPath;
+        const filepath = process.argv[3]+"/" + slicedPath;
         
         fs.readFile(filepath, (err, data) => {
             let response;
