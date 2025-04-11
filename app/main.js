@@ -34,10 +34,10 @@ const server = net.createServer((socket) => {
         console.log(headerObj["octet-stream"]);
 
        // fs.writeFileSync(path, content);
-
+        socket.end();
     }
 
-    if(method === "GET" && path.startsWith("/files/")){
+    else if(method === "GET" && path.startsWith("/files/")){
         const slicedPath = path.substring("/files/".length);
         const fs = require("fs");
         const filepath = process.argv[3]+"/" + slicedPath;
