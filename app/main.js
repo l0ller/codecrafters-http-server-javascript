@@ -25,11 +25,13 @@ const server = net.createServer((socket) => {
 
     });
 
+    let response;
+
     if(method === "GET" && path.startsWith("/files/")){
         const slicedPath = path.substring("/files/".length);
         const fs = require("fs");
         const filepath = "tmp/" + slicedPath;
-        try{
+        
         fs.readFile(filepath, (err, data) => {
             let response;
             if(err){
@@ -42,11 +44,8 @@ const server = net.createServer((socket) => {
                 response = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + data.length + "\r\n\r\n" + data;
                 socket.write(response);
             }
-        });}
-        catch(err){
-          //  console.log(err);
+        });
 
-        }
         
 
     }
