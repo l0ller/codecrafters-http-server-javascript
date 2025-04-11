@@ -30,6 +30,8 @@ const server = net.createServer((socket) => {
     console.log(headerObj)
 
     let response;
+    
+
     if(method === "POST" && path.startsWith("/files/")){
     try{
         const slicedPath = path.substring("/files/".length);
@@ -76,11 +78,18 @@ const server = net.createServer((socket) => {
 
 
     else if(method === "GET" && path.startsWith("/echo/")){
+        if (headerObj["Accept-Encoding"] === "gzip") {
+            const slicedPath = path.substring("/echo/".length);
+            response = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length:" + slicedPath.length + "\r\n\r\n" + slicedPath;
+            socket.end();
+            return;
+        }
+        else{
         const slicedPath = path.substring("/echo/".length);
         response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:" + slicedPath.length + "\r\n\r\n" + slicedPath;
         console.log(response);
         socket.write(response);
-        socket.end();
+        socket.end();}
     }
 
     else if(method === "GET" && path.startsWith("/user-agent")){
