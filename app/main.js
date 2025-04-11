@@ -26,6 +26,16 @@ const server = net.createServer((socket) => {
     });
 
     let response;
+    if(method === "POST" && path.startsWith("/files/")){
+        const slicedPath = path.substring("/files/".length);
+        const fs = require("fs");
+        const filepath = process.argv[3]+"/" + slicedPath;
+        console.log(filepath);
+        console.log(headerObj);
+
+       // fs.writeFileSync(path, content);
+
+    }
 
     if(method === "GET" && path.startsWith("/files/")){
         const slicedPath = path.substring("/files/".length);
@@ -51,6 +61,7 @@ const server = net.createServer((socket) => {
         
 
     }
+
 
     else if(method === "GET" && path.startsWith("/echo/")){
         const slicedPath = path.substring("/echo/".length);
