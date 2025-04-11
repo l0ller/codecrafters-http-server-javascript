@@ -31,7 +31,7 @@ const server = net.createServer((socket) => {
         const fs = require("fs");
         const filepath = process.argv[3]+"/" + slicedPath;
         console.log(filepath);
-        console.log(headerObj);
+        console.log(headerObj[4]);
 
        // fs.writeFileSync(path, content);
 
