@@ -78,18 +78,34 @@ const server = net.createServer((socket) => {
 
 
     else if(method === "GET" && path.startsWith("/echo/")){
-        if (headerObj["Accept-Encoding"] && (headerObj["Accept-Encoding"] === "gzip" || headerObj["Accept-Encoding"].includes("gzip"))) {
-            const slicedPath = path.substring("/echo/".length);
-            const zlib = require("zlib");
-            const gzip = zlib.createGzip();
-            const buffer = Buffer.from(slicedPath, "utf-8");
-            const compressed = gzip.update(buffer, "utf-8", "base64") + gzip.flush("base64");
-            response = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length:" + compressed.length + "\r\n\r\n" + compressed;
-            socket.write(response);
-            console.log(response);
-            socket.end();
-            return;
+        
+
+        if (
+          headerObj["Accept-Encoding"] &&
+          (headerObj["Accept-Encoding"] === "gzip" ||
+            headerObj["Accept-Encoding"].includes("gzip"))
+        ) {
+        const zlib = require("zlib");
+          const slicedPath = path.substring("/echo/".length);
+          const buffer = Buffer.from(slicedPath, "utf-8");
+          const compressed = zlib.gzipSync(buffer); // Synchronous gzip
+        
+          const responseHeaders =
+            "HTTP/1.1 200 OK\r\n" +
+            "Content-Encoding: gzip\r\n" +
+            "Content-Type: text/plain\r\n" +
+            "Content-Length: " +
+            compressed.length +
+            "\r\n\r\n";
+        
+          socket.write(responseHeaders);
+          console.log(responseHeaders);
+          console.log(compressed);
+          socket.write(compressed); // Binary-safe
+          socket.end();
+          return;
         }
+        
         // else if(headerObj["Accept-Encoding"] && !headerObj["Accept-Encoding"].includes("gzip")){
 
         // }
