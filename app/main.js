@@ -24,9 +24,14 @@ const server = net.createServer((socket) => {
         }
 
     });
+    console.log(method)
+    console.log(path)
+    console.log(headers)
+    console.log(headerObj)
 
     let response;
     if(method === "POST" && path.startsWith("/files/")){
+    try{
         const slicedPath = path.substring("/files/".length);
         const fs = require("fs");
         const filepath = process.argv[3] + slicedPath;
@@ -35,7 +40,13 @@ const server = net.createServer((socket) => {
         console.log(content);
         fs.writeFileSync(filepath, content);
         socket.write("HTTP/1.1 201 Created\r\n\r\n");
+    } catch (err) {
+        console.error("Error writing file:", err);
+        socket.write("HTTP/1.1 500 Internal Server Error\r\n\r\nFile write failed");
+    }
+    
         socket.end();
+
     }
 
     else if(method === "GET" && path.startsWith("/files/")){
