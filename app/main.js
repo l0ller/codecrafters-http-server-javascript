@@ -31,9 +31,10 @@ const server = net.createServer((socket) => {
         const fs = require("fs");
         const filepath = process.argv[3] + slicedPath;
         console.log(filepath);
-        console.log(headers[headers.length-1]);
-
-       // fs.writeFileSync(path, content);
+        const content = headers[headers.length-1];
+        console.log(content);
+        fs.writeFileSync(filepath, content);
+        socket.write("HTTP/1.1 201 Created\r\n\r\n");
         socket.end();
     }
 
