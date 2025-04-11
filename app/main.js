@@ -78,7 +78,7 @@ const server = net.createServer((socket) => {
 
 
     else if(method === "GET" && path.startsWith("/echo/")){
-        if (headerObj["Accept-Encoding"] === "gzip" || headerObj["Accept-Encoding"].includes("gzip")) {
+        if (headerObj["Accept-Encoding"] && (headerObj["Accept-Encoding"] === "gzip" || headerObj["Accept-Encoding"].includes("gzip"))) {
             const slicedPath = path.substring("/echo/".length);
             response = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length:" + slicedPath.length + "\r\n\r\n" + slicedPath;
             socket.write(response);
