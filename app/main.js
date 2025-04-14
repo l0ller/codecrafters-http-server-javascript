@@ -47,7 +47,7 @@ const server = net.createServer((socket) => {
         socket.write("HTTP/1.1 500 Internal Server Error\r\n\r\nFile write failed");
     }
     
-        socket.end();
+        ////socket.end();
 
     }
 
@@ -63,12 +63,12 @@ const server = net.createServer((socket) => {
                 response = "HTTP/1.1 404 Not Found\r\n\r\n";
                 console.log(response);
                 socket.write(response);
-                socket.end();
+                ////socket.end();
             }
             else{
                 response = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + data.length + "\r\n\r\n" + data;
                 socket.write(response);
-                socket.end();
+                ////socket.end();
             }
         });
 
@@ -102,7 +102,7 @@ const server = net.createServer((socket) => {
           console.log(responseHeaders);
           console.log(compressed);
           socket.write(compressed); // Binary-safe
-          socket.end();
+          //socket.end();
           return;
         }
         
@@ -114,14 +114,15 @@ const server = net.createServer((socket) => {
         response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:" + slicedPath.length + "\r\n\r\n" + slicedPath;
         console.log(response);
         socket.write(response);
-        socket.end();}
+        //socket.end();
+        }
     }
 
     else if(method === "GET" && path.startsWith("/user-agent")){
         const userAgent = headerObj["User-Agent"];
         response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:" + userAgent.length + "\r\n\r\n" + userAgent;
         socket.write(response);
-        socket.end();
+        //socket.end();
     }
     
     
@@ -129,12 +130,13 @@ const server = net.createServer((socket) => {
         console.log(path);
         response = "HTTP/1.1 404 Not Found\r\n\r\n";
         socket.write(response);
-        socket.end();
+        //socket.end();
     }
     else {
     const response = "HTTP/1.1 200 OK\r\n\r\n"
     socket.write(response);
-    socket.end();}
+    //socket.end();
+    }
 
     
 
