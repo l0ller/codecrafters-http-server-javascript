@@ -117,7 +117,7 @@ const server = net.createServer((socket) => {
     }
     else {
     console.log("else")
-    const response = "HTTP/1.1 200 OK\r\n\r\n"
+    response = "HTTP/1.1 200 OK\r\n\r\n"
     }
 
     //for writing closing the connection
