@@ -12,7 +12,8 @@ const server = net.createServer((socket) => {
     const [method,path,version] = requestline.split(" ");
     const headers = requestparts.slice(1);
     const headerObj = {};
-
+    let response;
+    let connectionflag = true;
   
     
     headers.forEach(header =>{
@@ -28,7 +29,7 @@ const server = net.createServer((socket) => {
     console.log(path)
     console.log(headers)
     console.log(headerObj)
-    let response;
+   
     
 
     if(method === "POST" && path.startsWith("/files/")){
@@ -36,17 +37,19 @@ const server = net.createServer((socket) => {
         const slicedPath = path.substring("/files/".length);
         const fs = require("fs");
         const filepath = process.argv[3] + slicedPath;
-        console.log(filepath);
+
         const content = headers[headers.length-1];
-        console.log(content);
+  
         fs.writeFileSync(filepath, content);
-        socket.write("HTTP/1.1 201 Created\r\n\r\n");
+        response = "HTTP/1.1 201 Created\r\n\r\n";
+        
     } catch (err) {
         console.error("Error writing file:", err);
-        socket.write("HTTP/1.1 500 Internal Server Error\r\n\r\nFile write failed");
+        response = "HTTP/1.1 500 Internal Server Error\r\n\r\nFile write failed";
+        
     }
     
-        ////socket.end();
+
 
     }
 
@@ -60,14 +63,12 @@ const server = net.createServer((socket) => {
             if(err){
                 
                 response = "HTTP/1.1 404 Not Found\r\n\r\n";
-                console.log(response);
-                socket.write(response);
-                ////socket.end();
+
+
             }
             else{
                 response = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + data.length + "\r\n\r\n" + data;
-                socket.write(response);
-                ////socket.end();
+
             }
         });
 
@@ -139,7 +140,12 @@ const server = net.createServer((socket) => {
 
     //for closeing the connection
     if(headerObj["Connection"] && headerObj["Connection"] === "close"){
+        
+        
+        response = response.replace("\r\n\r\n", "\r\nConnection: close\r\n\r\n");
+        socket.write(response);
         socket.end();
+        flag
     }
     
 
