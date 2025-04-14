@@ -31,6 +31,7 @@ const server = net.createServer((socket) => {
 
     if(method === "POST" && path.startsWith("/files/")){
     try{
+        console.log("1 1")
         const slicedPath = path.substring("/files/".length);
         const fs = require("fs");
         const filepath = process.argv[3] + slicedPath;
@@ -41,13 +42,10 @@ const server = net.createServer((socket) => {
         response = "HTTP/1.1 201 Created\r\n\r\n";
         
     } catch (err) {
+        console.log("1 2")
         console.error("Error writing file:", err);
-        response = "HTTP/1.1 500 Internal Server Error\r\n\r\nFile write failed";
-        
+        response = "HTTP/1.1 500 Internal Server Error\r\n\r\nFile write failed";      
     }
-    
-
-
     }
 
     else if(method === "GET" && path.startsWith("/files/")){
@@ -58,30 +56,28 @@ const server = net.createServer((socket) => {
         fs.readFile(filepath, (err, data) => {
             let response;
             if(err){
+                console.log("2 1");
                 
                 response = "HTTP/1.1 404 Not Found\r\n\r\n";
 
 
             }
             else{
+                console.log("2 2")
                 response = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + data.length + "\r\n\r\n" + data;
 
             }
         });
-
-        
-
     }
 
 
     else if(method === "GET" && path.startsWith("/echo/")){
-        
-
         if (
           headerObj["Accept-Encoding"] &&
           (headerObj["Accept-Encoding"] === "gzip" ||
             headerObj["Accept-Encoding"].includes("gzip"))
         ) {
+        console.log("3 1")
         const zlib = require("zlib");
           const slicedPath = path.substring("/echo/".length);
           const buffer = Buffer.from(slicedPath, "utf-8");
@@ -94,48 +90,37 @@ const server = net.createServer((socket) => {
             "Content-Length: " +
             compressed.length +
             "\r\n\r\n";
-        
-          socket.write(responseHeaders);
-          console.log(responseHeaders);
-          console.log(compressed);
-          socket.write(compressed); // Binary-safe
-          //socket.end();
-          return;
+          
+            socket.write(responseHeaders);
+            console.log(responseHeaders);
+            response = compressed;
         }
         
-        // else if(headerObj["Accept-Encoding"] && !headerObj["Accept-Encoding"].includes("gzip")){
-
-        // }
         else{
+        console.log("3 2")
         const slicedPath = path.substring("/echo/".length);
         response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:" + slicedPath.length + "\r\n\r\n" + slicedPath;
-        console.log(response);
-        socket.write(response);
-        //socket.end();
         }
     }
 
     else if(method === "GET" && path.startsWith("/user-agent")){
+        console.log("4 1")
         const userAgent = headerObj["User-Agent"];
         response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:" + userAgent.length + "\r\n\r\n" + userAgent;
-        socket.write(response);
-        //socket.end();
     }
     
     
     else if(path !== "/"){
+        console.log("5 1")
         console.log(path);
         response = "HTTP/1.1 404 Not Found\r\n\r\n";
-        socket.write(response);
-        //socket.end();
     }
     else {
+    console.log("else")
     const response = "HTTP/1.1 200 OK\r\n\r\n"
-    socket.write(response);
-    //socket.end();
     }
 
-    //for closing the connection
+    //for writing closing the connection
 
     if(headerObj["Connection"] && headerObj["Connection"] == "close"){
         console.log(response)        
@@ -147,6 +132,8 @@ const server = net.createServer((socket) => {
     else{
         socket.write(response);
     }
+
+
     
 
   });
