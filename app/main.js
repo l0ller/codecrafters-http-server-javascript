@@ -52,8 +52,11 @@ const server = net.createServer((socket) => {
         console.log("2")
         const slicedPath = path.substring("/files/".length);
         const fs = require("fs");
-        const filepath = process.argv[3]+"/" + slicedPath;
-        
+        let filepath;
+        if(process.argv[3])
+        filepath = process.argv[3]+"/" + slicedPath;
+        else
+        console.log("zsxdcfvghgvfcd")
         fs.readFile(filepath, (err, data) => {
             if(err){
                 console.log("2 1");
