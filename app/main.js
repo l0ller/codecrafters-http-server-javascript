@@ -28,7 +28,6 @@ const server = net.createServer((socket) => {
     console.log(path)
     console.log(headers)
     console.log(headerObj)
-
     let response;
     
 
