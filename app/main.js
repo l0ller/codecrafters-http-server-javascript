@@ -138,10 +138,10 @@ const server = net.createServer((socket) => {
     //socket.end();
     }
 
-    //for closeing the connection
-    if(headerObj["Connection"] && headerObj["Connection"] === "close"){
-        
-        
+    //for closing the connection
+
+    if(headerObj["Connection"] && headerObj["Connection"] == "close"){
+        console.log(response)        
         response = response.replace("\r\n\r\n", "\r\nConnection: close\r\n\r\n");
         socket.write(response);
         socket.end();
