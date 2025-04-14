@@ -13,7 +13,7 @@ const server = net.createServer((socket) => {
     const headers = requestparts.slice(1);
     const headerObj = {};
     let response;
-    let connectionflag = true;
+    let connectionon = true;
   
     
     headers.forEach(header =>{
@@ -145,7 +145,10 @@ const server = net.createServer((socket) => {
         response = response.replace("\r\n\r\n", "\r\nConnection: close\r\n\r\n");
         socket.write(response);
         socket.end();
-        flag
+        connectionon = false;
+    }
+    if(connectionon){
+        socket.write(response);
     }
     
 
