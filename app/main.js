@@ -48,29 +48,28 @@ const server = net.createServer((socket) => {
     }
     }
 
-    else if(method === "GET" && path.startsWith("/files/")){
-        console.log("2")
+    else if (method === "GET" && path.startsWith("/files/")) {
+        console.log("2");
         const slicedPath = path.substring("/files/".length);
-        console.log(slicedPath);
         const fs = require("fs");
-        let filepath;
-        if(process.argv[3])
-        filepath = process.argv[3]+"/" + slicedPath;
-        fs.readFile(filepath, (err, data) => {
-            if(err){
-                console.log("2 1");
-                
-                response = "HTTP/1.1 404 Not Found\r\n\r\n";
-
-
-            }
-            else{
-                console.log("2 2")
-                response = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + data.length + "\r\n\r\n" + data;
-
-            }
-        });
+    
+        const filepath = (process.argv[3] || "") + "/" + slicedPath;
+    
+        try {
+            const data = fs.readFileSync(filepath);
+            console.log("2 2");
+    
+            response = "HTTP/1.1 200 OK\r\n" +
+                       "Content-Type: application/octet-stream\r\n" +
+                       "Content-Length: " + data.length + "\r\n\r\n" +
+                       data;
+        } catch (err) {
+            console.log("2 1");
+            response = "HTTP/1.1 404 Not Found\r\n\r\n";
+        }
     }
+    
+    
 
 
     else if(method === "GET" && path.startsWith("/echo/")){
