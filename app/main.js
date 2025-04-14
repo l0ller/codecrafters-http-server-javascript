@@ -145,9 +145,9 @@ const server = net.createServer((socket) => {
         response = response.replace("\r\n\r\n", "\r\nConnection: close\r\n\r\n");
         socket.write(response);
         socket.end();
-        connectionon = false;
+      
     }
-    if(connectionon){
+    else{
         socket.write(response);
     }
     
