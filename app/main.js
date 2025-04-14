@@ -49,6 +49,7 @@ const server = net.createServer((socket) => {
     }
 
     else if(method === "GET" && path.startsWith("/files/")){
+        console.log("2")
         const slicedPath = path.substring("/files/".length);
         const fs = require("fs");
         const filepath = process.argv[3]+"/" + slicedPath;
