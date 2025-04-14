@@ -54,7 +54,6 @@ const server = net.createServer((socket) => {
         const filepath = process.argv[3]+"/" + slicedPath;
         
         fs.readFile(filepath, (err, data) => {
-            let response;
             if(err){
                 console.log("2 1");
                 
@@ -140,5 +139,3 @@ const server = net.createServer((socket) => {
 });
 
 server.listen(4221, "localhost")
-
-
