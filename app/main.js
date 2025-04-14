@@ -1,6 +1,5 @@
 const net = require("net");
 
-// You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
 
 //Uncomment this to pass the first stage
@@ -20,8 +19,6 @@ const server = net.createServer((socket) => {
         if(header){
             const[key,value] = header.split(": ");
             headerObj[key] = value;
-            // console.log(key);
-            // console.log(value);
         }
 
     });
