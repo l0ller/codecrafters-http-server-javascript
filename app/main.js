@@ -137,6 +137,10 @@ const server = net.createServer((socket) => {
     //socket.end();
     }
 
+    //for closeing the connection
+    if(headerObj["Connection"] && headerObj["Connection"] === "close"){
+        socket.end();
+    }
     
 
   });
